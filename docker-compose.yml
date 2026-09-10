@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: finagent_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: finagent
+      POSTGRES_PASSWORD: finagentpassword
+      POSTGRES_DB: finagent
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finagent -d finagent"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: finagent_backend
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://finagent:finagentpassword@postgres:5432/finagent
+      - SECRET_KEY=supersecretfinagentjwtkeypleasechangethisinproduction
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - AGENT_CONFIDENCE_THRESHOLD=0.75
+      - ANOMALY_SENSITIVITY=0.70
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: finagent_frontend
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

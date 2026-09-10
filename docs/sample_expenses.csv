@@ -1,0 +1,11 @@
+Date,Merchant,Amount,Category,PaymentMethod,Description
+2026-09-01,Starbucks,480.00,Food,UPI,Morning latte and croissant
+2026-09-02,Uber,380.00,Transport,Card,Cab to office
+2026-09-03,Blinkit,1250.00,Groceries,UPI,Weekly milk and veggies
+2026-09-04,Zara,3499.00,Shopping,Card,Casual t-shirts
+2026-09-05,PVR Cinemas,850.00,Entertainment,Card,Weekend movie tickets
+2026-09-06,Airtel Broadband,1179.00,Bills,NetBanking,Monthly fiber internet bill
+2026-09-07,Bastian Fine Dining,4500.00,Food,Card,Celebration luxury dinner
+2026-09-08,Apollo Pharmacy,420.00,Healthcare,UPI,Cold medicine and vitamins
+2026-09-09,Netflix,649.00,Subscriptions,Card,Monthly 4K streaming plan
+2026-09-10,Rahul,2500.00,,UPI,Paid 2500 to Rahul
